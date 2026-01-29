@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đếm ngược hạn chót</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+.widget {
+  border: 10px solid #facc15;      /* KHUNG VÀNG */
+  border-radius: 24px;
+  padding: 40px 60px;
+  text-align: center;
+  background: #020617;
+  box-shadow: 0 0 40px rgba(250,204,21,0.4);
+}
+
+.deadline {
+  font-size: 22px;
+  color: #e5e7eb;
+  margin-bottom: 16px;
+}
+
+.person {
+  font-size: 26px;
+  color: #ef4444;                  /* TÊN ĐỎ */
+  margin-bottom: 24px;
+  font-weight: bold;
+}
+
+#timer {
+  font-size: 72px;                 /* SỐ ĐẾM TO */
+  font-weight: bold;
+  color: #facc15;                  /* VÀNG */
+}
+
+.expired {
+  color: #ef4444;
+  font-size: 64px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="widget">
+  <div class="deadline">
+    Hạn chót: 20:00 – 31/01/2026 (GMT+7)
+  </div>
+
+  <div class="person">
+    Bùi Anh Hào – Ban Kế Hoạch
+  </div>
+
+  <div id="timer">Đang tính…</div>
+</div>
+
+<script>
+  // ====== CẤU HÌNH THỜI GIAN ======
+  // 20:00 GMT+7 = 13:00 UTC
+  const deadlineUTC = Date.UTC(2026, 0, 31, 13, 0, 0);
+
+  function updateTimer() {
+    const now = new Date().getTime();
+    let diff = deadlineUTC - now;
+
+    if (diff <= 0) {
+      document.getElementById("timer").innerHTML =
+        "<span class='expired'>⛔ ĐÃ HẾT HẠN</span>";
+      return;
+    }
+
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    let minutes = Math.floor((diff / (1000 * 60)) % 60);
+    let seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("timer").innerText =
+      days + " ngày " +
+      String(hours).padStart(2, "0") + ":" +
+      String(minutes).padStart(2, "0") + ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  setInterval(updateTimer, 1000);
+  updateTimer();
+</script>
+
+</body>
+</html>
